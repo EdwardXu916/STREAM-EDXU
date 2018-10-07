@@ -26,25 +26,29 @@ class EnergyConverTech:
               .format(self.name, type_text[self.type], self.id), end=" ")
 
     @classmethod
-    def print_number_ect(cls):
+    def print_number(cls):
         print('Database have {} type(s) of energy conversion technology'.format(EnergyConverTech.number_ect))
 
 
-class Energy2ElecTech(EnergyConverTech):
+class Energy2ElecConverter(EnergyConverTech):
     """Class Definition of Energy to Electricity Technology in Energy Conversion Technology"""
     number = 0
 
     def __init__(self, identifier, name, output, efficiency):
         EnergyConverTech.__init__(self, identifier, name, output)
         self.efficiency = efficiency
-        Energy2ElecTech.number += 1
-        print('You have profiled a new energy to electricity technology. \n'
-              'Number of profiled energy to electricity technology is {}. \n'.format(Energy2ElecTech.number))
+        Energy2ElecConverter.number += 1
+        print('You have profiled a new energy to electricity technology. \n')
+        Energy2ElecConverter.print_number()
 
     def print(self):
         """Print the feature of energy to electricity conversion technology"""
         EnergyConverTech.print(self)
         print('efficiency: {}.\n'.format(self.efficiency))
+
+    @classmethod
+    def print_number(cls):
+        print('Number of profiled energy to electricity converters is {}.'.format(Energy2ElecConverter.number))
 
     @classmethod
     def create_input(cls, identifier_ect):
@@ -56,16 +60,16 @@ class Energy2ElecTech(EnergyConverTech):
                    )
 
 
-class Energy2HeatTech(EnergyConverTech):
+class Energy2HeatConverter(EnergyConverTech):
     """Class Definition of Energy to Heat Technology in Energy Conversion Technology"""
     number = 0
 
     def __init__(self, identifier, name, output, efficiency):
         EnergyConverTech.__init__(self, identifier, name, output)
         self.efficiency = efficiency
-        Energy2HeatTech.number += 1
+        Energy2HeatConverter.number += 1
         print('You have profiled a new energy to heat tech. \n'
-              'Number of profiled energy to heat technology is {}. \n'.format(Energy2HeatTech.number))
+              'Number of profiled energy to heat technology is {}. \n'.format(Energy2HeatConverter.number))
 
     def print(self):
         """Print the feature of energy to heat conversion technology"""
@@ -82,7 +86,7 @@ class Energy2HeatTech(EnergyConverTech):
                    )
 
 
-class Energy2ElecHeatTech(EnergyConverTech):
+class Energy2ElecHeatConverter(EnergyConverTech):
     """Class Definition of Energy to Electricity & Heat Technology in Energy Conversion Technology"""
     number = 0
 
@@ -90,10 +94,10 @@ class Energy2ElecHeatTech(EnergyConverTech):
         EnergyConverTech.__init__(self, identifier, name, output)
         self.efficiency_e2e = efficiency_e2e
         self.efficiency_e2h = efficiency_e2h
-        Energy2ElecHeatTech.number += 1
+        Energy2ElecHeatConverter.number += 1
         print('You have profiled a new energy to electricity and heat technology. \n'
               'Number of profiled energy to electricity and heat technology is {}. \n'
-              .format(Energy2ElecHeatTech.number))
+              .format(Energy2ElecHeatConverter.number))
 
     def print(self):
         """Print the feature of energy to electricity conversion technology"""
@@ -113,23 +117,19 @@ class Energy2ElecHeatTech(EnergyConverTech):
 
 # Initialize default energy technology.
 identifier_ect = 'eg_001'
-eg_001 = Energy2ElecTech('eg_001', 'Electric Generator 001', 1, 50)
+eg_001 = Energy2ElecConverter(identifier_ect, 'Electric Generator 001', 1, 50)
 electricGenerators = {'eg_001': eg_001}
-
-Energy2ElecTech.print(eg_001)
-
-identifier_ect = 'eg_001'
-he_001 = Energy2HeatTech('he_001', 'Heat Exchanger 001', 2, 50)
+identifier_ect = 'he_001'
+he_001 = Energy2HeatConverter(identifier_ect, 'Heat Exchanger 001', 2, 50)
 heatExchangers = {'he_001': he_001}
-
-identifier_ect = 'eg_001'
-chp_001 = Energy2ElecHeatTech('chp_001', 'Combined Heat Power 001', 3, 20, 30)
+identifier_ect = 'chp_001'
+chp_001 = Energy2ElecHeatConverter(identifier_ect, 'Combined Heat Power 001', 3, 20, 30)
 combinedHeatPowers = {'chp_001': chp_001}
-
-identifier_ect = 0
+identifier_ect = 'exit'  # Initialize the value of identifier_ect
 
 
 def check_identifier_ect(identifier_ect):
+    """Check if the input identifier already exits."""
     operand_ect_m = 1
     if identifier_ect == 'exit':
         operand_ect_m = 0
@@ -142,7 +142,7 @@ def check_identifier_ect(identifier_ect):
 
 
 def profile_ect():
-    # Input energy conversion technology from terminal.
+    """Input energy conversion technology from terminal."""
     operand_ect_i = 1
     operand_ect_j = 1
     while operand_ect_i <= 3:
@@ -161,24 +161,21 @@ def profile_ect():
                                       '3. Profile a product can converse energy to electricity and heat. \n'
                                       ' 3.1 Combined Heat and Power Plant \n')
                 if operand_ect_n == '1.1':
-                    electricGenerators[identifier_ect] = Energy2ElecTech.create_input(identifier_ect)
-                    print('You have profiled a new electric generator.\n')
+                    electricGenerators[identifier_ect] = Energy2ElecConverter.create_input(identifier_ect)
+                    print('The energy to electricity converter profiled is a electric generator.\n')
                     electricGenerators[identifier_ect].print()
                     for electricGenerator in electricGenerators.items():
                         print(electricGenerator)
-                    print('---------- Succeed Profile a New Energy Conversion Technology ---------- \n')
                     break
                 elif operand_ect_n == '2.1':
-                    heatExchangers[identifier_ect] = Energy2HeatTech.create_input(identifier_ect)
+                    heatExchangers[identifier_ect] = Energy2HeatConverter.create_input(identifier_ect)
                     print('You have profiled a new heat exchanger.\n')
                     heatExchangers[identifier_ect].print()
-                    print('---------- Succeed Profile a New Energy Conversion Technology ---------- \n')
                     break
                 elif operand_ect_n == '3.1':
-                    combinedHeatPowers[identifier_ect] = Energy2ElecHeatTech.create_input(identifier_ect)
+                    combinedHeatPowers[identifier_ect] = Energy2ElecHeatConverter.create_input(identifier_ect)
                     print('You have profiled a new combine heat and power.\n')
                     combinedHeatPowers[identifier_ect].print()
-                    print('---------- Succeed Profile a New Energy Conversion Technology ---------- \n')
                     break
                 elif operand_ect_n == 'exit':
                     operand_ect_i = 0
